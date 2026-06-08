@@ -43,7 +43,9 @@ COLORS = {
     "panel_border": "#d8dee4",
     "forest": "#1b7837",
     "loss": "#d95f02",
+    "loss_hot": "#e6007e",
     "gain": "#1a9641",
+    "gain_hot": "#00b894",
     "neutral": "#f7f7f7",
     "ferld": "#ffd43b",
     "buffer": "#42c5f5",
@@ -342,6 +344,7 @@ temporal_files = {
     "ndvi_2020": OUTPUTS / "FERLD_temporal_NDVI_2020.tif",
     "ndvi_2023": OUTPUTS / "FERLD_temporal_NDVI_2023.tif",
     "delta"    : OUTPUTS / "FERLD_temporal_delta_NDVI_2017_2023.tif",
+    "change"   : OUTPUTS / "FERLD_temporal_change_map_2017_2023.tif",
 }
 
 missing_temp = [k for k, v in temporal_files.items() if not v.exists()]
@@ -375,9 +378,9 @@ else:
         cr = QgsColorRampShader()
         cr.setColorRampType(QgsColorRampShader.Type.Interpolated)
         cr.setColorRampItemList([
-            QgsColorRampShader.ColorRampItem(-0.4, QColor("#d73027"), "-0.4"),
-            QgsColorRampShader.ColorRampItem( 0.0, QColor("#f7f7f7"), "0"),
-            QgsColorRampShader.ColorRampItem( 0.4, QColor("#1a9641"), "+0.4"),
+            QgsColorRampShader.ColorRampItem(-0.4, QColor(COLORS["loss_hot"]), "-0.4"),
+            QgsColorRampShader.ColorRampItem( 0.0, QColor(COLORS["neutral"]), "0"),
+            QgsColorRampShader.ColorRampItem( 0.4, QColor(COLORS["gain_hot"]), "+0.4"),
         ])
         shader.setRasterShaderFunction(cr)
         r = QgsSingleBandPseudoColorRenderer(lyr.dataProvider(), 1, shader)
@@ -386,11 +389,29 @@ else:
         project.addMapLayer(lyr, False); root.addLayer(lyr)
         return lyr
 
+    def load_change_raster(path, name):
+        lyr = QgsRasterLayer(str(path), name, "gdal")
+        shader = QgsRasterShader()
+        cr = QgsColorRampShader()
+        cr.setColorRampType(QgsColorRampShader.Type.Exact)
+        cr.setColorRampItemList([
+            QgsColorRampShader.ColorRampItem(0, QColor(247, 247, 247, 55), "Stable"),
+            QgsColorRampShader.ColorRampItem(1, QColor(COLORS["loss_hot"]), "Perte ΔNDVI"),
+            QgsColorRampShader.ColorRampItem(2, QColor(COLORS["gain_hot"]), "Gain ΔNDVI"),
+        ])
+        shader.setRasterShaderFunction(cr)
+        r = QgsSingleBandPseudoColorRenderer(lyr.dataProvider(), 1, shader)
+        lyr.setRenderer(r)
+        lyr.setOpacity(0.88)
+        project.addMapLayer(lyr, False); root.addLayer(lyr)
+        return lyr
+
     lyr_n17  = load_ndvi_raster(temporal_files["ndvi_2017"], "NDVI 2017")
     lyr_n20  = load_ndvi_raster(temporal_files["ndvi_2020"], "NDVI 2020")
     lyr_n23  = load_ndvi_raster(temporal_files["ndvi_2023"], "NDVI 2023")
-    lyr_delt = load_delta_raster(temporal_files["delta"],    "\u0394NDVI 2017\u21922023")
-    print("✓ 4 rasters temporels chargés")
+    lyr_delt = load_delta_raster(temporal_files["delta"],    "\u0394NDVI continu 2017\u21922023")
+    lyr_change = load_change_raster(temporal_files["change"], "Changement ΔNDVI 2017\u21922023")
+    print("✓ 5 rasters temporels chargés")
 
     ext_t = lyr_n17.extent()
     if lyr_n17.crs() != CRS_UTM:
@@ -476,7 +497,7 @@ else:
         (lyr_n17,  "NDVI 2017",            0, 0),
         (lyr_n20,  "NDVI 2020",            1, 0),
         (lyr_n23,  "NDVI 2023",            0, 1),
-        (lyr_delt, "\u0394NDVI 2017\u21922023", 1, 1),
+        (lyr_change, "Changement 2017\u21922023", 1, 1),
     ]:
         x = M_LEFT + col * (panel_w + GAP)
         y = M_TOP  + row * (panel_h + GAP)
@@ -528,7 +549,7 @@ else:
     add_label(
         lay2,
         "Données: Sentinel-2 SR (ESA) · Composite médian juin–sept · "
-        "Seuil perte ΔNDVI < −0.10 · gain > +0.05 · "
+        "Changement classé: perte ΔNDVI < −0.10 · gain > +0.05 · "
         "CRS: EPSG:32618 · CEF Workshop 2026 — GEE + Python",
         (M_LEFT, 297 - M_BOT - NOTE_H, total_w + LEG_W + GAP, NOTE_H),
         size=6,
@@ -591,9 +612,9 @@ else:
         "Interprétation\n\n"
         "· Stable         Pixels où le ΔNDVI reste entre −0.10 et +0.05 — "
         "pas de changement spectral significatif.\n"
-        "· Perte (rouge)  Pixels où le ΔNDVI chute sous −0.10 — perte de vigueur végétale "
+        "· Perte (magenta)  Pixels où le ΔNDVI chute sous −0.10 — perte de vigueur végétale "
         "(coupe, feu, chablis, défoliation sévère).\n"
-        "· Gain (vert)    Pixels où le ΔNDVI dépasse +0.05 — regain de vigueur "
+        "· Gain (vert vif) Pixels où le ΔNDVI dépasse +0.05 — regain de vigueur "
         "(régénération, fermeture de couvert).\n\n"
         "Note: le ΔNDVI détecte les changements spectraux sans distinguer la cause. "
         "Pour une interprétation causale, croiser avec Hansen Global Forest Change (lossyear).",
