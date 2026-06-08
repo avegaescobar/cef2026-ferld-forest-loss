@@ -38,7 +38,8 @@ COLORS = {
     "panel": "#ffffff",
     "panel_border": "#d8dee4",
     "forest": "#1b7837",
-    "loss": "#d95f02",
+    "stable": "#f7f7f7",
+    "loss": "#e6007e",
     "ferld": "#ffd43b",
     "buffer": "#42c5f5",
     "sample_0": "#111827",
@@ -137,18 +138,18 @@ print(f"✓ RF TIF — CRS: {lyr_rf.crs().authid()}")
 print(f"  Étendue : {lyr_rf.extent()}")
 print(f"  Taille  : {rf_tif_path.stat().st_size/1024:.0f} KB")
 
-# Style raster exact — 0=vert foncé, 1=orange, 50% transparence
+# Style raster exact — stable is almost transparent; predicted loss is high contrast.
 shader    = QgsRasterShader()
 colorRamp = QgsColorRampShader()
 colorRamp.setColorRampType(QgsColorRampShader.Type.Exact)
 colorRamp.setColorRampItemList([
-    QgsColorRampShader.ColorRampItem(0, QColor(COLORS["forest"]), "Pas de perte détectée"),
-    QgsColorRampShader.ColorRampItem(1, QColor(COLORS["loss"]), "Perte de forêt Hansen"),
+    QgsColorRampShader.ColorRampItem(0, QColor(247, 247, 247, 35), "Pas de perte prédite"),
+    QgsColorRampShader.ColorRampItem(1, QColor(COLORS["loss"]), "Perte de forêt prédite RF"),
 ])
 shader.setRasterShaderFunction(colorRamp)
 renderer = QgsSingleBandPseudoColorRenderer(lyr_rf.dataProvider(), 1, shader)
 lyr_rf.setRenderer(renderer)
-lyr_rf.setOpacity(0.62)   # satellite visible, classification still legible
+lyr_rf.setOpacity(0.92)
 lyr_rf.triggerRepaint()
 
 project.addMapLayer(lyr_rf, False)
@@ -274,8 +275,8 @@ map_item.setFrameStrokeColor(QColor(COLORS["panel_border"]))
 map_item.setCrs(CRS_UTM)
 map_item.setExtent(ext_map)
 
-# Ordre : points → raster RF → basemap
-map_layers = [l for l in [lyr_ferld, lyr_roi_exp, lyr_samples, lyr_rf, lyr_basemap] if l is not None]
+# Main PDF intentionally excludes training points: they add red noise at this scale.
+map_layers = [l for l in [lyr_ferld, lyr_roi_exp, lyr_rf, lyr_basemap] if l is not None]
 map_item.setLayers(map_layers)
 map_item.setKeepLayerSet(True)
 map_item.refresh()

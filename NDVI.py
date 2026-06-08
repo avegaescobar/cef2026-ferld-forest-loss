@@ -42,7 +42,8 @@ COLORS = {
     "panel": "#ffffff",
     "panel_border": "#d8dee4",
     "forest": "#1b7837",
-    "loss": "#d95f02",
+    "stable": "#f7f7f7",
+    "loss": "#e6007e",
     "loss_hot": "#e6007e",
     "gain": "#1a9641",
     "gain_hot": "#00b894",
@@ -143,13 +144,13 @@ shader    = QgsRasterShader()
 colorRamp = QgsColorRampShader()
 colorRamp.setColorRampType(QgsColorRampShader.Type.Exact)
 colorRamp.setColorRampItemList([
-    QgsColorRampShader.ColorRampItem(0, QColor(COLORS["forest"]), "Pas de perte détectée"),
-    QgsColorRampShader.ColorRampItem(1, QColor(COLORS["loss"]), "Perte de forêt Hansen"),
+    QgsColorRampShader.ColorRampItem(0, QColor(247, 247, 247, 35), "Pas de perte prédite"),
+    QgsColorRampShader.ColorRampItem(1, QColor(COLORS["loss"]), "Perte de forêt prédite RF"),
 ])
 shader.setRasterShaderFunction(colorRamp)
 renderer = QgsSingleBandPseudoColorRenderer(lyr_rf.dataProvider(), 1, shader)
 lyr_rf.setRenderer(renderer)
-lyr_rf.setOpacity(0.62)
+lyr_rf.setOpacity(0.92)
 lyr_rf.triggerRepaint()
 project.addMapLayer(lyr_rf, False)
 root.insertLayer(0, lyr_rf)
@@ -265,7 +266,8 @@ map_item.setFrameEnabled(True)
 map_item.setFrameStrokeColor(QColor(COLORS["panel_border"]))
 map_item.setCrs(CRS_UTM)
 map_item.setExtent(ext_map)
-map_item.setLayers([l for l in [lyr_ferld, lyr_roi_exp, lyr_samples, lyr_rf, lyr_basemap] if l])
+# Main RF PDF excludes training points by default: they add red visual noise at this scale.
+map_item.setLayers([l for l in [lyr_ferld, lyr_roi_exp, lyr_rf, lyr_basemap] if l])
 map_item.setKeepLayerSet(True)
 map_item.refresh()
 
