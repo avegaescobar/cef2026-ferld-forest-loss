@@ -37,23 +37,21 @@ The notebook walks through a complete remote-sensing workflow:
 - Export of GeoTIFF and GeoJSON outputs for QGIS
 - Automatic cartographic layout generation with Python and QGIS
 
-## Colab Cartographic Reports
+## Colab Cartographic Report
 
 The recommended publication workflow is fully Colab-based:
 
 1. Run `cef2026_gee_python_colab_workshop_FOREST_LOSS_final.ipynb`.
-2. Confirm the expected GeoTIFF/GeoJSON outputs exist in `My Drive/Workshop/Outputs`.
+2. Confirm `FERLD_RF_forest_loss_no_loss.tif` exists in `My Drive/Workshop/Outputs`.
 3. Run `cef2026_ferld_cartographic_reports_colab.ipynb`.
 
-The cartographic notebook generates PDF and PNG reports directly in:
+The cartographic notebook generates a PDF and PNG map directly in:
 
 `My Drive/Workshop/Outputs/Reports`
 
-Generated reports:
+Generated files:
 
 - `CEF2026_carte_FERLD_colab.pdf/png`
-- `CEF2026_carte_temporelle_NDVI_colab.pdf/png`
-- `CEF2026_tableau_statistique_NDVI_colab.pdf/png`
 
 This workflow does not require QGIS or local computer paths.
 
