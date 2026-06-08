@@ -19,6 +19,8 @@ https://forestcguy.github.io/cef2026-gee-workshop/
 ## Notebook
 
 - `cef2026_gee_python_colab_workshop_FOREST_LOSS_final.ipynb`
+- `Import_GEE.py`
+- `NDVI.py`
 
 The notebook walks through a complete remote-sensing workflow:
 
@@ -31,6 +33,13 @@ The notebook walks through a complete remote-sensing workflow:
 - Delta NDVI temporal analysis
 - Export of GeoTIFF and GeoJSON outputs for QGIS
 - Automatic cartographic layout generation with Python and QGIS
+
+## QGIS Report Scripts
+
+The QGIS scripts are intended to be run from the QGIS Python console after the Colab notebook has exported the expected files to `My Drive/Workshop/Outputs`.
+
+- `Import_GEE.py` loads the forest-loss classification outputs and exports the main FERLD map PDF.
+- `NDVI.py` loads the classification and temporal NDVI outputs, then exports the forest-loss map, temporal NDVI map, and NDVI statistics PDF.
 
 ## Data And Outputs
 
