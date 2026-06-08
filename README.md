@@ -1,6 +1,6 @@
 # CEF 2026 FERLD Forest Loss Workshop
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/forestcguy/cef2026-ferld-forest-loss/blob/main/cef2026_gee_python_colab_workshop_FOREST_LOSS_final.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/avegaescobar/cef2026-ferld-forest-loss/blob/main/cef2026_gee_python_colab_workshop_FOREST_LOSS_final.ipynb)
 
 Google Earth Engine + Python/Colab workshop material for detecting forest cover loss over the Foret d'enseignement et de recherche du lac Duparquet (FERLD), Abitibi-Temiscamingue, Quebec.
 
