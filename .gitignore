@@ -12,6 +12,10 @@ outputs/
 *.qgz
 *.qgs
 
+# Local-only QGIS helper scripts with machine-specific paths
+Import_GEE.py
+NDVI.py
+
 # Local environment files
 .env
 .venv/

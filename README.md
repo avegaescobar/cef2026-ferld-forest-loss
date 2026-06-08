@@ -18,14 +18,12 @@ The broader CEF 2026 workshop has two parts:
 The introductory workshop site is available at:
 https://forestcguy.github.io/cef2026-gee-workshop/
 
-## Notebook
+## Notebooks
 
 - `cef2026_gee_python_colab_workshop_FOREST_LOSS_final.ipynb`
 - `cef2026_ferld_cartographic_reports_colab.ipynb`
-- `Import_GEE.py`
-- `NDVI.py`
 
-The notebook walks through a complete remote-sensing workflow:
+The main notebook walks through a complete remote-sensing workflow:
 
 - Google Earth Engine authentication from Python/Colab
 - FERLD area-of-interest loading
@@ -34,8 +32,8 @@ The notebook walks through a complete remote-sensing workflow:
 - Spectral and terrain predictor generation
 - Random Forest classification with scikit-learn
 - Delta NDVI temporal analysis
-- Export of GeoTIFF and GeoJSON outputs for QGIS
-- Automatic cartographic layout generation with Python and QGIS
+- Export of GeoTIFF and GeoJSON outputs to Google Drive
+- Colab-based cartographic report generation
 
 ## Colab Cartographic Report
 
@@ -55,16 +53,9 @@ Generated files:
 
 This workflow does not require QGIS or local computer paths.
 
-## Optional QGIS Scripts
-
-The QGIS scripts are optional local helpers for users who want to build layouts inside QGIS after the Colab notebook has exported the expected files to `My Drive/Workshop/Outputs`.
-
-- `Import_GEE.py` loads the forest-loss classification outputs and exports the main FERLD map PDF.
-- `NDVI.py` loads the classification and temporal NDVI outputs, then exports the forest-loss map, temporal NDVI map, and NDVI statistics PDF.
-
 ## Data And Outputs
 
-The workflow expects the FERLD area of interest and writes geospatial outputs suitable for QGIS. Large generated outputs are intentionally not versioned here.
+The workflow expects the FERLD area of interest and writes geospatial outputs to Google Drive. Large generated outputs are intentionally not versioned here.
 
 ## Contributors
 
