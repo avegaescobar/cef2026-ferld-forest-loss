@@ -1,0 +1,18 @@
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Local/generated geospatial outputs
+Outputs/
+outputs/
+*.tif
+*.tiff
+*.geojson
+*.gpkg
+*.qgz
+*.qgs
+
+# Local environment files
+.env
+.venv/
+venv/
