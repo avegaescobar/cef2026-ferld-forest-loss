@@ -64,6 +64,8 @@ The workflow expects the FERLD area of interest and writes geospatial outputs to
 - Osvaldo Valeria
 - Alejandro Vega Escobar
 
-## Citation
+## Suggested Citation
 
-If you reuse this material, please cite the CEF 2026 Google Earth Engine workshop and link back to the workshop site and this repository.
+If you use or adapt these materials, please cite:
+
+Kabuanga, J. M., Verabhadraswamy, N., Vega Escobar, A., and Valeria, O. 2026. CEF 2026 FERLD Forest Loss Workshop. Workshop materials, CEF 2026 Workshop, Université Laval, Québec City, May 27, 2026.
